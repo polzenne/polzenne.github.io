@@ -3,7 +3,7 @@
 "productName": "CalciumLackRunnerKobayashi",
 "productVersion": "0.1",
 "dataUrl": "Release.data.unityweb",
-"wasmCodeUrl": "Release.wasm.code.unityweb",
+"wasmCodeUrl": "Release.wasm",
 "wasmFrameworkUrl": "Release.wasm.framework.unityweb",
 "graphicsAPI": ["WebGL 2.0","WebGL 1.0"],
 "webglContextAttributes": {"preserveDrawingBuffer": false},
