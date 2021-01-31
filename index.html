@@ -1,59 +1,53 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>ポルゼンヌのデータ倉庫</title>
-<meta name="keywords" content="ウディタ,RPG,ゲーム,ポルゼンヌ" />
-<meta name="description" content="ポルゼンヌのデータ公開用倉庫です" />
-<link rel="stylesheet" href="index.css" type="text/css" />
-</head>
-<body>
-<div id="outer">
-<div id="header"><div id="head-inner"><a href="https://polzenne.github.io/"><img src="img/polzenneLogo.png" alt="ポルゼンヌ"title="polzenne" width="20%" height="20%"></a>
-<p class="description">ポルゼンヌのデータ公開用倉庫です</p>
-</div>
-</div>
-<div id="contents">
-<h4>変更履歴</h4>
-<p>2021/01/02 ver1.00 公開</p>
-
 <html>
 <head>
-<title>ダウンロードリンク</title>
+	<title>ポルゼンヌの倉庫</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="main.css" rel="stylesheet">
 </head>
 <body>
- <table border="1">
-    <tr>
-      <th>ゲーム名</th>
-      <th>リンク</th>
-    </tr>
-    <tr>
-      <td>グッバイタスクフリースロー</td>
-      <td><a href="Data/GoodByeTaskFreeThrow/">ゲーム開始</a></td>
-    </tr>
-    <tr>
-      <td>カルシウム不足ランナー小林</td>
-      <td><a href="Data/CalciumLackRunnerKobayashi/">ゲーム開始</a></td>
-    </tr>
-  </table>
+	<div id="common"></div>
+	<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+		<img src="img/real.jpg" class="img-fluid">
+		<br />
+		<br />
+		<h3>ポルゼンヌの倉庫</h3>
+		<hr />
+		ポルゼンヌの作成したゲームや素材を置く倉庫です。
+		
+				<hr />
+        
+        
+      <div class="row">
+      <div class="col-lg-4">
+        <img src="img/gameicon.png" class="img-responsive img-circle">
+        <h2>自作ゲーム</h2>
+        <p>WOLF RPGエディター製のWindows用ゲームを置いています</p>
+        <p><a class="btn btn-secondary" href="game.html" role="button">移動する &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4">
+        <img src="img/minigameicon.png" class="img-responsive img-circle">
+
+        <h2>ミニゲーム</h2>
+        <p>unity webgl製のWEBでプレイできるミニゲームを置いています</p>
+        <p><a class="btn btn-secondary" href="minigame.html" role="button">移動する &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4">
+        <svg class="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="img/minigameicon.png" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg>
+        <h2>BGM素材</h2>
+        <p>BGMとして利用できるMIDI素材やMP3素材を公開しています</p>
+        <p><a class="btn btn-secondary" href="bgm.html" role="button">移動する &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+
+    </div><!-- /.row -->
+        
+	</main>
+	
+	<script src="js/jquery-3.5.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script>
+		$(function(){
+			$("#common").load("common.html");
+		});
+	</script>
 </body>
 </html>
-<br>
-<br>
-
-</div>
-<div id="middle">
-<div class="side-title">menu</div>
-<div class="side">
-<ul>
-<li><a href="https://polzenne.github.io/">トップページに戻る</a></li>
-</ul>
-</div>
-</div>
-<div id="footer">© 2020 http://polzenne.blog.fc2.com/</div>
-</div></body>
-</html>
-
