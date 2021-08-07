@@ -43,8 +43,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main content -->
     <div class="content">
     
-    
-    
     <div class="container-fluid">
       <!-- general form elements disabled -->
       <!-- general form elements disabled -->
@@ -54,13 +52,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-          <form>
+          <form
+           action="https://formspree.io/f/xjvjazka"
+           method="POST"
+          >
             <div class="row">
               <div class="col-sm-4">
                 <!-- text input -->
                 <div class="form-group">
-                  <label>名前</label>
-                  <input type="text" class="form-control" placeholder="名前を入力してください">
+                  <label>メールアドレス</label>
+                  <input type="email" name="_replyto" class="form-control" placeholder="メールアドレスを入力してください">
                 </div>
               </div>
             </div>
@@ -69,16 +70,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <!-- textarea -->
                 <div class="form-group">
                   <label>内容</label>
-                  <textarea class="form-control" rows="3" placeholder="内容を入力してください"></textarea>
+                  <textarea name="message" class="form-control" rows="3" placeholder="内容を入力してください"></textarea>
                 </div>
               </div>
             </div>
-          </form>
+
         </div>
         <!-- /.card-body -->
           <div class="card-footer">
             <button type="submit" class="btn btn-primary">送信</button>
           </div>
+          </form>
         
       </div>
       
