@@ -15,8 +15,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  
-  
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
@@ -46,54 +44,90 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="container-fluid">
       <!-- general form elements disabled -->
       <!-- general form elements disabled -->
-      <div class="card card-primary">
+      <div class="card card-primary mt-3 col-md-8">
         <div class="card-header">
           <h3 class="card-title">メールフォーム</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-          <form
-           action="https://formspree.io/f/xjvjazka"
-           method="POST"
+          <form class="row g-3 needs-validation" novalidate
+            action="https://formspree.io/f/xjvjazka"
+            method="POST"
           >
-            <div class="row">
-              <div class="col-sm-4">
-                <!-- text input -->
-                <div class="form-group">
-                  <label>メールアドレス</label>
-                  <input type="email" name="_replyto" class="form-control" placeholder="メールアドレスを入力してください">
+            <div class="col-md-4">
+              <label for="validationCustom01" class="form-label">名前</label>
+              <input type="text" class="form-control" id="validationCustom01" required placeholder="名前を入力してください">
+              <div class="invalid-feedback">
+                名前を入力してください
+              </div>
+              <div class="valid-feedback">
+                OK
+              </div>
+            </div>
+            <div class="col-md-8">
+              <label for="validationCustomUsername" class="form-label">メールアドレス</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text" id="inputGroupPrepend"><i class="far fa-envelope"></i></span>
+                <input type="email" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required placeholder="hoge@hoge.com">
+                <div class="valid-feedback">
+                  OK
+                </div>
+                <div class="invalid-feedback">
+                  メールアドレスを入力してください
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-sm-10">
-                <!-- textarea -->
-                <div class="form-group">
-                  <label>内容</label>
-                  <textarea name="message" class="form-control" rows="3" placeholder="内容を入力してください"></textarea>
-                </div>
+            <div class="col-md-12 my-2">
+              <label for="validationCustom05" class="form-label">内容</label>
+              <textarea rows="5" class="form-control" id="validationCustom05" required required placeholder="内容を入力してください"></textarea>
+              <div class="valid-feedback">
+                OK
+              </div>
+              <div class="invalid-feedback">
+                内容を入力してください
               </div>
             </div>
-
-        </div>
-        <!-- /.card-body -->
-          <div class="card-footer">
-            <button type="submit" class="btn btn-primary">送信</button>
-          </div>
+            <div class="col-12" >
+              <button class="btn btn-primary" type="submit">送信</button>
+            </div>
           </form>
-        
-      </div>
+        </div>
+
+
+
+
       
-      <div class="col-md-6">
-        <a class="nav-link" href="mailto:polzenne5884@gmail.com?subject=">
-          <span data-feather="file-text">
-          
-            <button type="button" class="btn btn-secondary btn-block"><i class="fa fa-envelope"></i>　送信できないときはこちら</button>
-          
-          </span>
-        </a>
+        <div class="col-md-6 mb-2">
+          <a class="nav-link" href="mailto:polzenne5884@gmail.com?subject=">
+            <span data-feather="file-text">
+            
+              <button type="button" class="btn btn-secondary btn-block"><i class="fa fa-envelope"></i>　送信できないときはこちら</button>
+            
+            </span>
+          </a>
+        </div>
       </div>
-      
     </div>
   </div>
-</div>
+  <script>
+  (function () {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+  })()
+  </script>
+</body>
