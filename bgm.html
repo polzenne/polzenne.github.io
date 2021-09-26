@@ -41,12 +41,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
 
     <!-- Main content -->
-    <div class="content">
-    
-    
-    
-        
+    <div class="content px-md-3 py-3">      
       <div class="container-fluid">
+
+        <div class="pb-3">
+          <h3>BGM素材</h3>
+          <p>自作のBGMを置いています。基本的にMIDI用で作成しています。 </p>
+
+          <a href="#" class="btn btn-secondary" data-toggle="modal" data-target="#modal-secondary">利用規約</a>
+        </div>
     
          <div class="table-responsive">
 	       <table class="table table-striped table-bordered text-nowrap">
@@ -183,12 +186,42 @@ scratch. This page gets rid of all links and provides the needed markup only.
            </table>
         </div>
 
+
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   
+  <div class="modal fade" id="modal-secondary">
+    <div class="modal-dialog">
+      <div class="modal-content bg-secondary">
+        <div class="modal-header">
+          <h4 class="modal-title">利用規約</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li>加工改変：自由</li>
+            <li>二次配布：自由</li>
+            <li>利用報告：不要</li>
+            <li>スタッフロールへの記述：不要</li>
+            <li>著作者を偽っての配布：禁止</li>
+          </ul>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
