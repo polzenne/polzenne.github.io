@@ -4,19 +4,27 @@
   <meta charset="utf-8">
   <title>土を掘れ！スコアランキング</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <!-- DataTables -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
   <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
   <style>
-    /* コンパクトにするため追加 */
     table#scoreTable th, table#scoreTable td {
       padding: 4px 5px;
       white-space: nowrap;
+    }
+    .score-link, .date-link {
+      cursor: pointer;
+      color: #0d6efd;
+      text-decoration: underline;
+    }
+    .score-link:hover, .date-link:hover {
+      color: #dc3545;
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -26,8 +34,27 @@
   <div id="table-area"></div>
 </div>
 
+<div class="modal fade" id="scoreModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+      </div>
+      <div class="modal-body">
+        <canvas id="scoreChart" width="800" height="400"></canvas>
+        <p class="mt-3 text-center" id="scoreMeta"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 const url = "https://script.google.com/macros/s/AKfycbxhXlJD-Tjo3PsQr2CWb1MZsT8T5EO8j2f-mOxM_BHgZ_whkHjIXTt1tuUI1IcW5Vpi/exec";
+let chartInstance = null;
+let allNames = [];
+let allScores = [];
+let allDates  = [];
+let allRows   = [];
 
 fetch(url)
   .then(res => res.text())
@@ -37,6 +64,11 @@ fetch(url)
       .filter(cols => cols.length === 4 && Number(cols[1]) > 0);
 
     rows.sort((a, b) => Number(b[1]) - Number(a[1]));
+
+    allRows   = rows;
+    allNames  = rows.map(cols => cols[0]);
+    allScores = rows.map(cols => Number(cols[1]));
+    allDates  = rows.map(cols => cols[2]);
 
     let table = `
       <div class="table-responsive">
@@ -52,30 +84,191 @@ fetch(url)
           <tbody>
     `;
     rows.forEach((cols, idx) => {
-      // 日付を短縮表示する場合（オプション）
-      let dateShort = cols[2].replace(/^[0-9]{4}-[0-9]{2}-[0-9]{2}\s?/, ''); // "YYYY-MM-DD " を除去
       table += `<tr>
         <td>${idx + 1}</td>
         <td>${cols[0]}</td>
-        <td>${cols[1]}</td>
-        <td>${cols[2]}</td>
+        <td>
+          <span class="score-link"
+                data-bs-toggle="modal"
+                data-bs-target="#scoreModal"
+                data-name="${cols[0]}"
+                data-score="${cols[1]}"
+                data-rank="${idx + 1}"
+                data-date="${cols[2]}"
+                data-index="${idx}"
+          >${cols[1]}</span>
+        </td>
+        <td>
+          <span class="date-link"
+                data-bs-toggle="modal"
+                data-bs-target="#scoreModal"
+                data-name="${cols[0]}"
+                data-score="${cols[1]}"
+                data-rank="${idx + 1}"
+                data-date="${cols[2]}"
+                data-index="${idx}"
+          >${cols[2]}</span>
+        </td>
       </tr>`;
     });
     table += '</tbody></table></div>';
     $("#table-area").html(table);
 
-    // DataTable初期化
     $("#scoreTable").DataTable({
       language: {
         url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/ja.json"
       },
-      pageLength: 100,             // 1ページ100件
-      lengthChange: false,         // 件数選択UIを消す
-      searching: true,             // 検索ボックスは有効（デフォルト: true）
-      ordering: true               // 並び替えは有効
+      pageLength: 100,
+      lengthChange: false,
+      searching: true,
+      ordering: true
     });
   });
-</script>
 
+$('#table-area').on('click', '.score-link', function() {
+  const idx = Number($(this).data('index'));
+  const name = $(this).data('name');
+  const score = $(this).data('score');
+  const rank = $(this).data('rank');
+  const date = $(this).data('date');
+
+  $("#scoreMeta").text(`名前：${name}　スコア：${score}　日付：${date}`);
+
+  const barColors = allNames.map((_, i) => i === idx ? 'rgba(255, 99, 132, 0.8)' : 'rgba(54, 162, 235, 0.5)');
+  const borderColors = allNames.map((_, i) => i === idx ? 'rgb(255, 99, 132)' : 'rgb(54, 162, 235)');
+
+  const ctx = document.getElementById('scoreChart').getContext('2d');
+  if(chartInstance) chartInstance.destroy();
+
+  chartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: allNames,
+      datasets: [{
+        label: 'スコア',
+        data: allScores,
+        backgroundColor: barColors,
+        borderColor: borderColors,
+        borderWidth: 2
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { display: false },
+        title: { display: false },
+        tooltip: {
+          callbacks: {
+            title: (items) => `名前: ${items[0].label}`,
+            label: (item) => `スコア: ${item.parsed.y}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            autoSkip: false,
+            maxRotation: 45,
+            minRotation: 45,
+            font: { size: 11 }
+          }
+        },
+        y: { beginAtZero: true }
+      }
+    }
+  });
+});
+
+$('#table-area').on('click', '.date-link', function() {
+  const clickedName = $(this).data('name');
+  const userDatas = allRows.map(cols => ({
+    name: cols[0],
+    x: cols[2].replace(' ', 'T'),
+    y: Number(cols[1])
+  }));
+
+  const othersData = [];
+  const clickedData = [];
+  userDatas.forEach(d => {
+    if (d.name === clickedName) {
+      clickedData.push(d);
+    } else {
+      othersData.push(d);
+    }
+  });
+
+  $("#scoreMeta").text(
+    `名前: ${clickedName}（${clickedData.length}件）／他${othersData.length}件`
+  );
+
+  const ctx = document.getElementById('scoreChart').getContext('2d');
+  if(chartInstance) chartInstance.destroy();
+
+  chartInstance = new Chart(ctx, {
+    type: "scatter",
+    data: {
+      datasets: [
+        {
+          data: othersData,
+          backgroundColor: "rgba(150, 150, 150, 0.5)",
+          borderColor: "rgba(150, 150, 150, 0.8)",
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          showLine: false
+        },
+        {
+          data: clickedData,
+          backgroundColor: "rgba(220,40,40,0.8)",
+          borderColor: "rgba(220,40,40,1)",
+          pointRadius: 8,
+          pointHoverRadius: 12,
+          showLine: false
+        }
+      ]
+    },
+    options: {
+      plugins: {
+        legend: { display: false },
+        title: { display: false },
+        tooltip: {
+          callbacks: {
+            title: (items) => `日付: ${items[0].raw.x.replace('T', ' ')}`,
+            label: (item) => `スコア: ${item.parsed.y}（${item.raw.name}）`
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: "time",
+          time: {
+            tooltipFormat: "yyyy-MM-dd HH:mm:ss",
+            displayFormats: {
+              day: "yyyy-MM-dd",
+              hour: "yyyy-MM-dd HH:mm",
+              minute: "yyyy-MM-dd HH:mm"
+            }
+          },
+          title: { display: true, text: "日付" },
+          ticks: {
+            font: { size: 11 }
+          }
+        },
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: "スコア" }
+        }
+      }
+    }
+  });
+});
+
+$('#scoreModal').on('hidden.bs.modal', function () {
+  if(chartInstance) {
+    chartInstance.destroy();
+    chartInstance = null;
+  }
+  $("#scoreMeta").html('');
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
